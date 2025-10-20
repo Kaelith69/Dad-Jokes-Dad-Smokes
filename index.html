@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dad Jokes Dad Smokes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comic Neue', 'Fredoka One', cursive, Arial, sans-serif;
+            background: linear-gradient(135deg, #f9f9f9 60%, #ffe082 100%);
+            text-align: center;
+            padding: 40px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .dad-svg {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-family: 'Fredoka One', 'Comic Neue', cursive;
+            color: #ff9800;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 #fffde7, 0 2px 8px #ffcc80;
+        }
+        #joke-box {
+            font-size: 1.4em;
+            margin: 30px auto;
+            padding: 24px 18px;
+            background: #fffde7;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px #ffe082;
+            max-width: 500px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4e342e;
+            font-family: 'Comic Neue', cursive;
+        }
+        /* Next button container for consistent placement */
+        .next-btn-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 32px 0 24px 0;
+            min-height: 60px;
+        }
+        input[type="text"] {
+            padding: 12px;
+            width: 80%;
+            max-width: 350px;
+            font-size: 1em;
+            border-radius: 8px;
+            border: 1px solid #ffb300;
+            margin-bottom: 10px;
+            font-family: 'Comic Neue', cursive;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border-radius: 8px;
+            border: none;
+            background: #ff9800;
+            color: #fff;
+            cursor: pointer;
+            margin: 5px;
+            font-family: 'Fredoka One', cursive;
+            box-shadow: 0 2px 6px #ffe082;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #f57c00;
+        }
+        #countdown {
+            font-size: 1em;
+            color: #8d6e63;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            #joke-box {
+                font-size: 1em;
+                padding: 16px 8px;
+                max-width: 95vw;
+            }
+            input[type="text"] {
+                width: 95vw;
+                max-width: 95vw;
+            }
+            .dad-svg {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dad-svg">
+        <!-- Cartoon Dad SVG (free, open source) -->
+        <svg viewBox="0 0 100 100" width="100" height="100">
+            <ellipse cx="50" cy="60" rx="30" ry="35" fill="#ffe0b2" stroke="#a1887f" stroke-width="2"/>
+            <ellipse cx="50" cy="40" rx="22" ry="18" fill="#ffe0b2" stroke="#a1887f" stroke-width="2"/>
+            <ellipse cx="38" cy="38" rx="3" ry="4" fill="#fff"/>
+            <ellipse cx="62" cy="38" rx="3" ry="4" fill="#fff"/>
+            <circle cx="38" cy="38" r="2" fill="#795548"/>
+            <circle cx="62" cy="38" r="2" fill="#795548"/>
+            <path d="M40 48 Q50 55 60 48" stroke="#795548" stroke-width="2" fill="none"/>
+            <rect x="44" y="60" width="12" height="6" rx="3" fill="#bdbdbd"/>
+            <rect x="56" y="62" width="10" height="2" rx="1" fill="#757575"/>
+            <ellipse cx="50" cy="80" rx="10" ry="5" fill="#a1887f"/>
+        </svg>
+    </div>
+    <h1>Dad Jokes Dad Smokes</h1>
+    <div id="joke-box">Loading jokes...</div>
+    <div class="next-btn-container">
+        <button id="next">Next</button>
+    </div>
+    <div>
+        <input type="text" id="new-joke" placeholder="Add your own dad joke!">
+        <button id="add-joke">Add Joke</button>
+    </div>
+    <script>
+        // Load jokes from localStorage or from dad_jokes.txt
+        let jokes = [];
+        let current = 0;
+
+        function loadJokes() {
+            const stored = localStorage.getItem('dadJokes');
+            if (stored) {
+                jokes = JSON.parse(stored);
+            } else {
+                // Fallback: load from dad_jokes.txt (if running on a server)
+                fetch('dad_jokes.txt')
+                    .then(r => r.text())
+                    .then(t => {
+                        jokes = t.split('\n').filter(j => j.trim());
+                        localStorage.setItem('dadJokes', JSON.stringify(jokes));
+                        showJoke();
+                    });
+            }
+        }
+
+        function showJoke() {
+            document.getElementById('joke-box').textContent = jokes.length ? jokes[current] : 'No jokes yet!';
+        }
+
+        function nextJoke() {
+            current = (current + 1) % jokes.length;
+            showJoke();
+        }
+
+        function addJoke() {
+            const input = document.getElementById('new-joke');
+            const joke = input.value.trim();
+            if (joke.length > 0) {
+                jokes.push(joke);
+                localStorage.setItem('dadJokes', JSON.stringify(jokes));
+                input.value = '';
+                current = jokes.length - 1;
+                showJoke();
+            }
+        }
+
+        document.getElementById('next').onclick = nextJoke;
+        document.getElementById('add-joke').onclick = addJoke;
+
+        window.onload = function() {
+            loadJokes();
+            setTimeout(() => {
+                showJoke();
+            }, 500); // Wait for jokes to load
+        };
+    </script>
+</body>
+</html>
