@@ -5,329 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dad Jokes Dad Smokes</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@700&display=swap"
-        rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root {
-            --bg-gradient-start: #0f172a;
-            --bg-gradient-end: #1e293b;
-            --accent-color: #fbbf24;
-            --accent-hover: #f59e0b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-            min-height: 100vh;
-            color: var(--text-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        /* Header Section */
-        header {
-            margin-bottom: 2rem;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        h1 {
-            font-family: 'Roboto Slab', serif;
-            font-size: 3rem;
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        /* Joke Card */
-        .joke-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 3rem 2rem;
-            box-shadow: var(--glass-shadow);
-            margin-bottom: 2rem;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-
-        .joke-card:hover {
-            transform: translateY(-5px);
-        }
-
-        #joke-text {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .quote-icon {
-            position: absolute;
-            font-size: 4rem;
-            color: rgba(251, 191, 36, 0.1);
-            font-family: serif;
-            pointer-events: none;
-        }
-
-        .quote-left {
-            top: 10px;
-            left: 20px;
-        }
-
-        .quote-right {
-            bottom: -20px;
-            right: 20px;
-        }
-
-        /* Actions */
-        .actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            color: var(--text-primary);
-            padding: 0.8rem 1.5rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            color: #0f172a;
-            border: none;
-            font-size: 1.1rem;
-            padding: 1rem 2rem;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
-        }
-
-        /* Add Joke Section */
-        .add-joke-section {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 1px solid var(--card-border);
-            width: 100%;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        input[type="text"] {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            padding: 0.8rem 1rem;
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--accent-color);
-        }
-
-        input[type="text"]::placeholder {
-            color: var(--text-secondary);
-        }
-
-        /* Utilities */
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-
-            .joke-card {
-                padding: 2rem 1.5rem;
-                min-height: 180px;
-            }
-
-            #joke-text {
-                font-size: 1.25rem;
-            }
-
-            .actions {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .input-group {
-                flex-direction: column;
-            }
-        }
-
-        /* Toast Notification */
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        #toast.show {
-            visibility: visible;
-            animation: fadein 0.5s, fadeout 0.5s 2.5s;
-        }
-
-        @keyframes fadein {
-            from {
-                bottom: 0;
-                opacity: 0;
-            }
-
-            to {
-                bottom: 30px;
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeout {
-            from {
-                bottom: 30px;
-                opacity: 1;
-            }
-
-            to {
-                bottom: 0;
-                opacity: 0;
-            }
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <div class="container">
         <header>
-            <h1>Dad Jokes Dad Smokes</h1>
-            <p class="subtitle">Premium quality groans, delivered daily.</p>
+            <h1>Dad Jokes</h1>
+            <p class="subtitle">Dad Smokes</p>
         </header>
 
         <main>
             <div class="joke-card">
                 <span class="quote-icon quote-left">“</span>
-                <p id="joke-text">Loading the finest dad humor...</p>
+                <p id="joke-text">Loading...</p>
                 <span class="quote-icon quote-right">”</span>
             </div>
 
             <div class="actions">
-                <button class="btn" id="copy-btn" title="Copy to clipboard">
+                <button class="btn btn-secondary" id="copy-btn" title="Copy to clipboard">
                     <i class="fa-regular fa-copy"></i> Copy
                 </button>
-                <button class="btn" id="tweet-btn" title="Share on Twitter">
+                <button class="btn btn-secondary" id="tweet-btn" title="Share on Twitter">
                     <i class="fa-brands fa-twitter"></i> Tweet
                 </button>
                 <button class="btn btn-primary" id="next-btn">
@@ -338,7 +41,7 @@
             <div class="add-joke-section">
                 <div class="input-group">
                     <input type="text" id="new-joke-input" placeholder="Got a better one? Add it here...">
-                    <button class="btn" id="add-btn">
+                    <button class="btn btn-accent" id="add-btn">
                         <i class="fa-solid fa-plus"></i> Add
                     </button>
                 </div>
@@ -349,120 +52,8 @@
     <!-- Toast Notification -->
     <div id="toast">Copied to clipboard!</div>
 
-    <script>
-        // State
-        let jokes = [];
-        let currentJoke = "";
-        const JOKE_FILE = 'dad_jokes_formatted.txt';
-        const STORAGE_KEY = 'dadJokes_premium_v1';
-
-        // Elements
-        const jokeText = document.getElementById('joke-text');
-        const nextBtn = document.getElementById('next-btn');
-        const copyBtn = document.getElementById('copy-btn');
-        const tweetBtn = document.getElementById('tweet-btn');
-        const addBtn = document.getElementById('add-btn');
-        const newJokeInput = document.getElementById('new-joke-input');
-        const toast = document.getElementById('toast');
-
-        // Logic
-        async function loadJokes() {
-            try {
-                // Try fetching from file first
-                const response = await fetch(JOKE_FILE);
-                if (!response.ok) throw new Error('Failed to load jokes file');
-
-                const text = await response.text();
-                const fileJokes = text.split('\n').filter(line => line.trim().length > 0);
-
-                // Merge with local storage jokes
-                const storedJokes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-                jokes = [...fileJokes, ...storedJokes];
-
-                if (jokes.length === 0) {
-                    jokes = ["Why did the developer go broke? Because he used up all his cache."];
-                }
-
-                showRandomJoke();
-            } catch (error) {
-                console.error('Error loading jokes:', error);
-                jokeText.textContent = "Error loading jokes. Check console.";
-                // Fallback if fetch fails completely
-                jokes = ["I'm reading a book on anti-gravity. It's impossible to put down!"];
-                showRandomJoke();
-            }
-        }
-
-        function showRandomJoke() {
-            // Animate out
-            jokeText.parentElement.style.opacity = '0';
-            jokeText.parentElement.style.transform = 'scale(0.98)';
-
-            setTimeout(() => {
-                const randomIndex = Math.floor(Math.random() * jokes.length);
-                currentJoke = jokes[randomIndex];
-                jokeText.textContent = currentJoke;
-
-                // Animate in
-                jokeText.parentElement.style.opacity = '1';
-                jokeText.parentElement.style.transform = 'scale(1)';
-            }, 200);
-        }
-
-        function copyToClipboard() {
-            navigator.clipboard.writeText(currentJoke).then(() => {
-                showToast("Joke copied to clipboard!");
-            }, () => {
-                showToast("Failed to copy.");
-            });
-        }
-
-        function tweetJoke() {
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(currentJoke)} - via Dad Jokes Dad Smokes`;
-            window.open(twitterUrl, '_blank');
-        }
-
-        function addUserJoke() {
-            const joke = newJokeInput.value.trim();
-            if (joke) {
-                // Save to local storage
-                const storedJokes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-                storedJokes.push(joke);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(storedJokes));
-
-                // Add to current session
-                jokes.push(joke);
-
-                newJokeInput.value = '';
-                showToast("Joke added successfully!");
-
-                // Option: show the new joke immediately?
-                // currentJoke = joke;
-                // jokeText.textContent = currentJoke;
-            } else {
-                showToast("Please enter a joke first!");
-            }
-        }
-
-        function showToast(message) {
-            toast.textContent = message;
-            toast.className = "show";
-            setTimeout(function () { toast.className = toast.className.replace("show", ""); }, 3000);
-        }
-
-        // Event Listeners
-        nextBtn.addEventListener('click', showRandomJoke);
-        copyBtn.addEventListener('click', copyToClipboard);
-        tweetBtn.addEventListener('click', tweetJoke);
-        addBtn.addEventListener('click', addUserJoke);
-        newJokeInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addUserJoke();
-        });
-
-        // Initialize
-        loadJokes();
-
-    </script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
 </body>
 
 </html>
