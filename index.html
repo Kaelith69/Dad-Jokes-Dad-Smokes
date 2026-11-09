@@ -285,6 +285,7 @@
       let currentIndex = -1;
       let history = [];
       let historyPosition = -1;
+      let transitionTimer = null;
       let transitionToken = 0;
       let toastTimer = null;
       let collectionMode = "favorites";
@@ -362,7 +363,8 @@
           return;
         }
         el.card.classList.add("is-changing");
-        window.setTimeout(update, 150);
+        window.clearTimeout(transitionTimer);
+        transitionTimer = window.setTimeout(update, 150);
       }
 
       function showIndex(index, addToHistory = true) {
@@ -475,15 +477,24 @@
           const next = userJokes.filter(item => item.toLocaleLowerCase() !== joke.toLocaleLowerCase());
           if (!saveArray(STORAGE.jokes, next)) return;
           userJokes = next;
+          const removedIndex = jokes.findIndex(item => item.toLocaleLowerCase() === joke.toLocaleLowerCase());
+          const wasCurrent = currentJoke.toLocaleLowerCase() === joke.toLocaleLowerCase();
           jokes = jokes.filter(item => item.toLocaleLowerCase() !== joke.toLocaleLowerCase());
-          history = history.filter(index => index >= 0 && index < jokes.length);
+          history = history
+            .filter(index => index !== removedIndex)
+            .map(index => index > removedIndex ? index - 1 : index);
           historyPosition = Math.min(historyPosition, history.length - 1);
-          if (currentJoke.toLocaleLowerCase() === joke.toLocaleLowerCase()) {
-            if (jokes.length) showIndex(0);
-            else {
-              currentJoke = "";
-              currentIndex = -1;
+          currentIndex = wasCurrent ? -1 : jokes.findIndex(item => item.toLocaleLowerCase() === currentJoke.toLocaleLowerCase());
+          if (wasCurrent) {
+            currentJoke = "";
+            if (jokes.length) {
+              showIndex(0);
+            } else {
+              el.index.textContent = "NO JOKES";
+              el.status.textContent = "Waiting for a joke";
               el.joke.textContent = "Your collection is empty. Add a joke to get started.";
+              el.card.classList.remove("is-changing");
+              el.favorite.disabled = true;
             }
           }
           updateCounter();
@@ -505,8 +516,14 @@
           showToast("Using the backup joke collection.");
         }
 
-        jokes = uniqueByText([...fileJokes, ...userJokes]);
+        const curated = uniqueByText(fileJokes);
+        userJokes = uniqueByText(userJokes).filter(
+          joke => !curated.some(item => item.toLocaleLowerCase() === joke.toLocaleLowerCase())
+        );
+        favorites = uniqueByText(favorites);
+        jokes = [...curated, ...userJokes];
         if (!jokes.length) jokes = [...FALLBACK_JOKES];
+        if (el.favorite) el.favorite.disabled = false;
         updateCounter();
         el.card.setAttribute("aria-busy", "false");
         el.status.textContent = "Ready to groan";
